@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import com.isa.mb.saltedHash.SaltHash;
 import com.isa.mb.ui.RegistrationForm;
 
 @ManagedBean
@@ -13,27 +14,25 @@ import com.isa.mb.ui.RegistrationForm;
 public class RegistrationBean
 {
 	 private RegistrationForm registrationForm = null;
-	 private List<String> interests = null;
-	 private List<String> genders = null;
+	 private SaltHash passwordtohash = new SaltHash();
 	 
 	 public RegistrationBean()
 	 {
-		  this.interests = new ArrayList<String>();
-		  this.interests.add("Sports");
-		  this.interests.add("Gadgets");
-		  this.interests.add("Politics");
-		  this.interests.add("Technology");
-		  
-		  this.genders = new ArrayList<String>();
-		  this.genders.add("Male");
-		  this.genders.add("Female");
+		
 	 }
 	 
 	 public String register()
 	 {
 		  System.out.println("register.....");
+		 // String password =  passwordtohash.getSecurePassword(registrationForm.getPassword());
+		  
 		  //store data in DB
 		  System.out.println(this.registrationForm);
+		  System.out.println("generated password after hashing is:" + registrationForm.getPassword());
+		  String salt = passwordtohash.getSalt();
+		  String securepwd = passwordtohash.getSecurePassword(registrationForm.getPassword(),salt);
+		  System.out.println("generated salt is:" + salt);
+		  System.out.println("generated secure pwd is:" + securepwd);
 		  return "welcome";//go to welcome.xhtml
 	 }
 	 
@@ -45,29 +44,6 @@ public class RegistrationBean
 		  return registrationForm;
 	 }
 	
-	 public void setRegistrationForm(RegistrationForm registrationForm)
-	 {
-		 this.registrationForm = registrationForm;
-	 }
-	
-	 public List<String> getInterests()
-	 {
-		 return interests;
-	 }
-	
-	 public void setInterests(List<String> interests)
-	 {
-		 this.interests = interests;
-	 }
-	
-	 public List<String> getGenders()
-	 {
-		 return genders;
-	 }
-	
-	 public void setGenders(List<String> genders)
-	 {
-		 this.genders = genders;
-	 }
+
  
 }
